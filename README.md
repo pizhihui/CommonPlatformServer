@@ -1,0 +1,2 @@
+# CommonPlatformServer
+netty构建的hbase和elasticsearch服务
