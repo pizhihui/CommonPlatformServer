@@ -27,7 +27,8 @@
     <bean id="propertyConfigurerUtil" class="com.yonyou.datafin.framework.SpringPropertiesUtil" lazy-init="false">
 		<property name="locations">
 		    <list>
-		        <value>classpath:config.properties</value>
+		        <!--<value>classpath:config.properties</value>-->
+                <value>#{systemProperties['conf_dir'] == null ? 'classpath:' : systemProperties[conf_dir]}/config.properties</value>
 		    </list>
 		</property>
 	</bean>

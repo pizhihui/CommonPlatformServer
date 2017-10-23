@@ -63,7 +63,7 @@ public class HttpSnoopServerHandler extends SimpleChannelInboundHandler<Object> 
 
             HttpHeaders headers = request.headers();
             if (!headers.isEmpty()) {
-                for (Map.Entry<String, String> h: headers) {
+                for (Entry<String, String> h: headers) {
                     CharSequence key = h.getKey();
                     CharSequence value = h.getValue();
                     buf.append("HEADER: ").append(key).append(" = ").append(value).append("\r\n");

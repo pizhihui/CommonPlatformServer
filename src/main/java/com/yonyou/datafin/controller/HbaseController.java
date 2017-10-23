@@ -1,5 +1,6 @@
 package com.yonyou.datafin.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.yonyou.datafin.annotation.Remote;
 import com.yonyou.datafin.hbase.HBaseAdminHelper;
 import com.yonyou.datafin.hbase.HBaseTableAccess;
@@ -10,6 +11,9 @@ import com.yonyou.datafin.netty.param.ResponseParam;
 import com.yonyou.datafin.netty.param.ResponseUtil;
 import org.apache.hadoop.hbase.TableNotFoundException;
 import org.springframework.stereotype.Controller;
+
+import java.io.IOException;
+import java.util.Map;
 
 /**
  * @author: pizhihui
@@ -43,6 +47,19 @@ public class HbaseController {
         }
         // 返回结果
         return ResponseUtil.createSuccessResult();
+    }
+
+
+    @Remote("getRow")
+    public ResponseParam getByRowKey(String table, String rowKey, String family) {
+        Map<String, Object> values = null;
+        try {
+            HBaseTableAccess dataAccess = new HBaseTableAccess(table);
+            values = dataAccess.queryByRowkey(rowKey, family);
+        } catch (IOException e) {
+            return ResponseUtil.createFailResult("get hbase data error: " + e.getMessage());
+        }
+        return ResponseUtil.createSuccessResult(JSONObject.toJSON(values));
     }
 
 }

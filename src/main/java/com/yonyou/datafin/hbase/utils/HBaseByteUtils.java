@@ -88,10 +88,10 @@ public class HBaseByteUtils {
 	    return Bytes.toBoolean(value);
 	  }
 	  
-	  public static void main(String[] args) {
-		System.out.println(toBytes("f5355fe252d7c9f30b152529e5b4f19c"));
-		System.out.println(toBytes("f5355fe252d7c9f30b152529e5b4f19c"));
-	}
+//	  public static void main(String[] args) {
+//		System.out.println(toBytes("f5355fe252d7c9f30b152529e5b4f19c"));
+//		System.out.println(toBytes("f5355fe252d7c9f30b152529e5b4f19c"));
+//	    }
 
 
 }
