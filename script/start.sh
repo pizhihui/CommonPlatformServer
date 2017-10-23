@@ -9,7 +9,7 @@ SERVER_CONF_DIR="file:${SERVER_HOME}/config"
 
 SERVER_CONF_FILE="${SERVER_CONF_DIR}/config.properties"
 SERVER_LIBS="${SERVER_HOME}/lib/*"
-STDOUT_FILE=${SERVER_HOME}/logs/sever-start.log
+STDOUT_FILE=${SERVER_HOME}/logs/server-start.log
 #SERVER_LIBS=`find ${SERVER_HOME}/lib -name *.jar | xargs | sed "s/ /:/g"`
 
 
@@ -20,7 +20,7 @@ if [ ! -d "${SERVER_LOG_DIR}" ]; then
    mkdir "${SERVER_LOG_DIR}"
 fi
 
-check_is_ruuing() {
+check_is_running() {
     PIDS=`ps -f | grep java | grep "${DEPLOY_DIR}" |awk '{print $2}'`
     if [ -n "$PIDS" ]; then
         echo "ERROR: The ${DEPLOY_DIR} already started!"
@@ -39,23 +39,26 @@ run() {
     nohup $run_server_cmd > $STDOUT_FILE 2>&1 &
 }
 
+running_success() {
+    COUNT=0
+    while [ $COUNT -lt 1 ]; do
+        echo -e ".\c"
+        sleep 1
+        COUNT=`ps -f | grep java | grep "${DEPLOY_DIR}" | awk '{print $2}' | wc -l`
+        if [ $COUNT -gt 0 ]; then
+            break
+        fi
+    done
 
-check_is_ruuing
+    echo "OK!"
+    PIDS=`ps -f | grep java | grep "${DEPLOY_DIR}" | awk '{print $2}'`
+    echo "PID: $PIDS"
+    echo "STDOUT: $STDOUT_FILE"
+
+
+}
+
+check_is_running
 run
+running_success
 
-
-
-COUNT=0
-while [ $COUNT -lt 1 ]; do
-    echo -e ".\c"
-    sleep 1
-    COUNT=`ps -f | grep java | grep "${DEPLOY_DIR}" | awk '{print $2}' | wc -l`
-    if [ $COUNT -gt 0 ]; then
-        break
-    fi
-done
-
-echo "OK!"
-PIDS=`ps -f | grep java | grep "${DEPLOY_DIR}" | awk '{print $2}'`
-echo "PID: $PIDS"
-echo "STDOUT: $STDOUT_FILE"
