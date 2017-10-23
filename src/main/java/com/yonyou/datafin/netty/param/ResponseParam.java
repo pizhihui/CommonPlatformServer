@@ -1,11 +1,11 @@
 package com.yonyou.datafin.netty.param;
 
 public class ResponseParam {
-	
-	private String code="00000";
-	
+    /** 返回的状态码 */
+	private String code = "200";
+	/** 返回的结果 */
 	private Object result;
-	
+	/** 返回的信息 */
 	private String msg;
 
 	

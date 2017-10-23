@@ -14,6 +14,8 @@ import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.Ordered;
@@ -25,6 +27,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class NettyHttpServer implements ApplicationListener<ContextRefreshedEvent>,Ordered {
+
+    Logger logger = LoggerFactory.getLogger(NettyHttpServer.class);
 
     public  void start() {
         int port = Integer.valueOf(SpringPropertiesUtil.getProperty("netty.server.port"));
@@ -42,8 +46,9 @@ public class NettyHttpServer implements ApplicationListener<ContextRefreshedEven
 
             Channel ch = b.bind(port).sync().channel();
 
-            System.err.println("Open your web browser and navigate to " +
+            logger.info("Open your web browser and navigate to " +
                     ("http") + "://127.0.0.1:" + port + '/');
+            //System.err.println("Open your web browser and navigate to " + ("http") + "://127.0.0.1:" + port + '/');
 
             ch.closeFuture().sync();
         } catch (InterruptedException e) {

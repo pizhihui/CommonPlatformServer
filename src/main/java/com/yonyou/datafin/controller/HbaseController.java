@@ -1,9 +1,6 @@
 package com.yonyou.datafin.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.yonyou.datafin.annotation.Remote;
-import com.yonyou.datafin.exception.BaseException;
-import com.yonyou.datafin.exception.BaseRuntimeException;
 import com.yonyou.datafin.hbase.HBaseAdminHelper;
 import com.yonyou.datafin.hbase.HBaseTableAccess;
 import com.yonyou.datafin.hbase.factory.HBaseConnectionFactory;
@@ -13,9 +10,6 @@ import com.yonyou.datafin.netty.param.ResponseParam;
 import com.yonyou.datafin.netty.param.ResponseUtil;
 import org.apache.hadoop.hbase.TableNotFoundException;
 import org.springframework.stereotype.Controller;
-
-import java.io.IOException;
-import java.util.Map;
 
 /**
  * @author: pizhihui
@@ -44,7 +38,8 @@ public class HbaseController {
             access.write(record);
 
         } catch (Exception e) {
-            throw new BaseRuntimeException("put hbase data error: {}", e);
+            //throw new BaseRuntimeException("put hbase data error: {}", e);
+            return ResponseUtil.createFailResult("put hbase data error: " + e.getMessage());
         }
         // 返回结果
         return ResponseUtil.createSuccessResult();
