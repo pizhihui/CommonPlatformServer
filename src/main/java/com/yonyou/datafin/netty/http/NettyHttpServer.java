@@ -48,7 +48,7 @@ public class NettyHttpServer implements ApplicationListener<ContextRefreshedEven
 
             Channel ch = b.bind(port).sync().channel();
 
-            logger.error("Open your web browser and navigate to " +
+            logger.info("Open your web browser and navigate to " +
                     ("http") + "://127.0.0.1:" + port + '/');
             //System.err.println("Open your web browser and navigate to " + ("http") + "://127.0.0.1:" + port + '/');
 
