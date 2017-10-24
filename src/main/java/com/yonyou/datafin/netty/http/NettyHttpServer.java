@@ -2,6 +2,7 @@ package com.yonyou.datafin.netty.http;
 
 import com.yonyou.datafin.exception.BaseRuntimeException;
 import com.yonyou.datafin.framework.SpringPropertiesUtil;
+import com.yonyou.datafin.logging.CommonServerUncaughtExceptionHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
@@ -47,7 +48,7 @@ public class NettyHttpServer implements ApplicationListener<ContextRefreshedEven
 
             Channel ch = b.bind(port).sync().channel();
 
-            logger.info("Open your web browser and navigate to " +
+            logger.error("Open your web browser and navigate to " +
                     ("http") + "://127.0.0.1:" + port + '/');
             //System.err.println("Open your web browser and navigate to " + ("http") + "://127.0.0.1:" + port + '/');
 
@@ -68,7 +69,11 @@ public class NettyHttpServer implements ApplicationListener<ContextRefreshedEven
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent arg0) {
+        //Thread.setDefaultUncaughtExceptionHandler(new CommonServerUncaughtExceptionHandler());
+
         start();
+
+
     }
 
     private class NettyHttpServerChannlInitailizer extends ChannelInitializer<SocketChannel> {

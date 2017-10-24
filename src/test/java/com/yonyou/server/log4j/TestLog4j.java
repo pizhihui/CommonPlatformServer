@@ -20,4 +20,23 @@ public class TestLog4j {
     }
 
 
+    @Test
+    public void testUncaughtException() {
+            Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+                public void uncaughtException(Thread t, Throwable e) {
+                    logger.error( t + " ExceptionDemo threw an exception: ", e);
+                };
+            });
+            class adminThread implements Runnable {
+                public void run() {
+                    throw new RuntimeException();
+                }
+            }
+
+            Thread t = new Thread(new adminThread());
+            t.start();
+    }
+
+
+
 }

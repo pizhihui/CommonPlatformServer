@@ -56,11 +56,10 @@ public class NettyHttpServerHandler extends SimpleChannelInboundHandler<FullHttp
                 result = m.invoke(bean, param);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("netty serve handle data error: ", e);
             ResponseParam responseParam = new ResponseParam();
-            String failMsg = "您的请求异常！";
-            responseParam.setCode("33333");
-            responseParam.setResult(failMsg);
+            responseParam.setCode("500");
+            responseParam.setMsg(e.getMessage());
             result = responseParam;
         }
 

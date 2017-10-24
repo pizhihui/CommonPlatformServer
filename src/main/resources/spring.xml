@@ -33,6 +33,21 @@
 		</property>
 	</bean>
 
+    <bean id="myhandler" class="com.yonyou.datafin.logging.CommonServerUncaughtExceptionHandler">
+
+    </bean>
+
+    <!-- 拦截全局的运行时异常 -->
+    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="targetClass" value="java.lang.Thread"/>
+        <property name="targetMethod" value="setDefaultUncaughtExceptionHandler"/>
+        <property name="arguments">
+            <list>
+                <ref bean="myhandler" />
+            </list>
+        </property>
+    </bean>
+
 
 
 </beans>
