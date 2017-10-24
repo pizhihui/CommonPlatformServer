@@ -10,6 +10,8 @@ import com.yonyou.datafin.model.HbaseDataModel;
 import com.yonyou.datafin.netty.param.ResponseParam;
 import com.yonyou.datafin.netty.param.ResponseUtil;
 import org.apache.hadoop.hbase.TableNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
@@ -23,6 +25,7 @@ import java.util.Map;
 @Controller
 public class HbaseController {
 
+    private Logger logger = LoggerFactory.getLogger(HbaseController.class);
     /**
      * 存入hbase数据
      * @param model
@@ -46,6 +49,7 @@ public class HbaseController {
             return ResponseUtil.createFailResult("put hbase data error: " + e.getMessage());
         }
         // 返回结果
+        logger.error("success put hbase data: {}", model.getRowKey());
         return ResponseUtil.createSuccessResult();
     }
 
@@ -59,6 +63,7 @@ public class HbaseController {
         } catch (IOException e) {
             return ResponseUtil.createFailResult("get hbase data error: " + e.getMessage());
         }
+        logger.info("success get hbase data: {}", rowKey);
         return ResponseUtil.createSuccessResult(JSONObject.toJSON(values));
     }
 

@@ -1,23 +1,23 @@
 #!/bin/bash
 SERVER_BIN=`dirname "$0"`
 SERVER_HOME=`cd "$SERVER_BIN/.." >/dev/null; pwd`
-echo "home:${SERVER_HOME}"
-SERVER_PID_DIR="${SERVER_HOME}/run"
-SERVER_LOG_DIR="${SERVER_HOME}/logs"
+echo "home:$SERVER_HOME"
+SERVER_PID_DIR="$SERVER_HOME/run"
+SERVER_LOG_DIR="$SERVER_HOME/logs"
 
-SERVER_CONF_DIR="file:${SERVER_HOME}/config"
+SERVER_CONF_DIR="file:$SERVER_HOME/config"
 
-SERVER_CONF_FILE="${SERVER_CONF_DIR}/config.properties"
-SERVER_LIBS="${SERVER_HOME}/lib/*"
-STDOUT_FILE=${SERVER_HOME}/logs/server-start.log
+SERVER_CONF_FILE="$SERVER_CONF_DIR/config.properties"
+SERVER_LIBS="$SERVER_HOME/lib/*"
+STDOUT_FILE="$SERVER_HOME/logs/server-start.log"
 #SERVER_LIBS=`find ${SERVER_HOME}/lib -name *.jar | xargs | sed "s/ /:/g"`
 
 
 DEPLOY_DIR="common_server_1.0"
 
 # make log dir
-if [ ! -d "${SERVER_LOG_DIR}" ]; then
-   mkdir "${SERVER_LOG_DIR}"
+if [ ! -d "$SERVER_LOG_DIR" ]; then
+   mkdir "$SERVER_LOG_DIR"
 fi
 
 check_is_running() {
@@ -30,11 +30,13 @@ check_is_running() {
 }
 
 run() {
-    SERVER_CLASSPATH="${SERVER_CONF_DIR}:${SERVER_LIBS}:${SERVER_HOME}/lib/CommonPlatformServer-1.0.jar}"
-    SERVER_CONF_PARAMS="-Dconf_dir=${SERVER_CONF_DIR}"
-    echo $SERVER_CLASSPATH
+    SERVER_CLASSPATH="$SERVER_CONF_DIR:$SERVER_LIBS:$SERVER_HOME/lib/CommonPlatformServer-1.0.jar"
+    SERVER_CONF_PARAMS="-Dconf_dir=$SERVER_CONF_DIR"
+    SERVER_LOG_PARAMS="-Dlog_dir=$SERVER_LOG_DIR"
+    SERVER_DIR_PARMAS="$SERVER_CONF_PARAMS $SERVER_LOG_PARAMS"
+
     main_method='com.yonyou.datafin.netty.server.SpringApplication'
-    run_server_cmd="java -cp '${SERVER_CLASSPATH}' ${SERVER_CONF_PARAMS} ${main_method}"
+    run_server_cmd="java -cp $SERVER_CLASSPATH $SERVER_DIR_PARMAS $main_method"
     #$run_server_cmd
     nohup $run_server_cmd > $STDOUT_FILE 2>&1 &
 }
