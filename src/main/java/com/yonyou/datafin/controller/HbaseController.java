@@ -7,6 +7,7 @@ import com.yonyou.datafin.hbase.HBaseTableAccess;
 import com.yonyou.datafin.hbase.factory.HBaseConnectionFactory;
 import com.yonyou.datafin.hbase.wrapper.HBaseRecordWrapper;
 import com.yonyou.datafin.model.HbaseDataModel;
+import com.yonyou.datafin.model.SearchParam;
 import com.yonyou.datafin.netty.param.ResponseParam;
 import com.yonyou.datafin.netty.param.ResponseUtil;
 import org.apache.hadoop.hbase.TableNotFoundException;
@@ -26,8 +27,20 @@ import java.util.Map;
 public class HbaseController {
 
     private Logger logger = LoggerFactory.getLogger(HbaseController.class);
-    /**
+
+
+    /** 传入json示例
+     {  "command":"search",
+        "content":{
+            "flag":1,
+            "index":"test-index",
+            "page":0,
+            "query":"旅游",
+            "type":"raw_fin_info"
+        }
+     } <br>
      * 存入hbase数据
+     * POST请求
      * @param model
      */
     @Remote("put")
@@ -54,16 +67,28 @@ public class HbaseController {
     }
 
 
-    @Remote("getRow")
-    public ResponseParam getByRowKey(String table, String rowKey, String family) {
+    /**  传入json示例
+     {  "command":"getByRowKey",
+        "content":{
+            "table":"hbase_api_test",
+            "rowKey":"12345",
+            "family":"info"
+        }
+     } <br/>
+     * 通过row_key获取数据
+     * @param searchParam
+     * @return
+     */
+    @Remote("getByRowKey")
+    public ResponseParam getByRowKey(SearchParam searchParam) {
         Map<String, Object> values = null;
         try {
-            HBaseTableAccess dataAccess = new HBaseTableAccess(table);
-            values = dataAccess.queryByRowkey(rowKey, family);
+            HBaseTableAccess dataAccess = new HBaseTableAccess(searchParam.getTable());
+            values = dataAccess.queryByRowkey(searchParam.getRowKey(), searchParam.getFamily());
         } catch (IOException e) {
             return ResponseUtil.createFailResult("get hbase data error: " + e.getMessage());
         }
-        logger.info("success get hbase data: {}", rowKey);
+        logger.info("success get hbase data: {}", searchParam.getRowKey());
         return ResponseUtil.createSuccessResult(JSONObject.toJSON(values));
     }
 
