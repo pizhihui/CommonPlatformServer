@@ -16,6 +16,8 @@ import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpHeaderValues;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.nio.charset.Charset;
@@ -27,6 +29,7 @@ import java.util.List;
  */
 public class NettyHttpServerHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
 
+    private Logger logger = LoggerFactory.getLogger(NettyHttpServerHandler.class);
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest msg) throws Exception {

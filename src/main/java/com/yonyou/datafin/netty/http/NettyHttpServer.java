@@ -14,6 +14,7 @@ import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
+import io.netty.handler.stream.ChunkedWriteHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;
@@ -77,6 +78,7 @@ public class NettyHttpServer implements ApplicationListener<ContextRefreshedEven
             //http解码，编码器
             ch.pipeline().addLast(new HttpServerCodec());
             ch.pipeline().addLast(new HttpObjectAggregator(1048576));
+            ch.pipeline().addLast(new ChunkedWriteHandler());
             // 字节的http处理类
             ch.pipeline().addLast(new NettyHttpServerHandler());
         }
