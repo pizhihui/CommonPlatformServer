@@ -62,7 +62,7 @@ public class HbaseController {
             return ResponseUtil.createFailResult("put hbase data error: " + e.getMessage());
         }
         // 返回结果
-        logger.info("success put hbase data: \n {} {}", model.getRowKey(), JSONObject.toJSONString(model.getColumnValues()));
+        logger.info("success put hbase data: {}", model.getRowKey());
         return ResponseUtil.createSuccessResult();
     }
 
